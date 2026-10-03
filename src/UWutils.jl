@@ -13,8 +13,8 @@ function Base.getindex(uw::uwreal,ii)
     return uw
 end
 
-abs(uw::uwreal) = uw.mean>0 ? uw : -uw
-abs2(uw::uwreal) = uw^2
+Base.abs(uw::uwreal) = uw.mean>0 ? uw : -uw
+Base.abs2(uw::uwreal) = uw^2
 
 Base.zero(::Type{uwreal}) = uwreal(0.0)
 
@@ -58,7 +58,7 @@ Assumes `uwerr` has been run on `x`. It return a tuple or a vector of tuples in 
   0.455(5)
 ```
 """
-function format_uwreal(x::uwreal)
+function format_uwreal(x::uwreal)::Tuple{String,String}
     v,e = x.mean, x.err;
     M = v==0 ? 1 : -floor(Int64,log10(0.5*e))
     v = round(v,digits=M)
@@ -88,6 +88,8 @@ function format_uwreal(x::AbstractArray{uwreal})
     return collect(zip(v,e))
 end
 
+export format_uwreal
+
 @doc raw"
     uwreal_to_tuple(x::uwreal)
 
@@ -102,13 +104,14 @@ It returns a `NTuple{N+1,Float64}` where `length(idset) = N` which contains the 
 "
 function uwreal_to_tuple(x::uwreal,idset...)
 
+    in_set(id,set) = in_set(id,set, eltype(set))
+
     in_set(id::T,set::T) where T = id == set
 
     in_set(id::Int64,set::String) = ADerrors.wsg.str2id[set] == id
 
     in_set(id::String,set::Int64) = ADerrors.wsg.str2id[id] == set
 
-    in_set(id,set) = in_set(id,set, eltype(set))
 
     in_set(id::T,set,::Type{T}) where T = id in set
 
@@ -130,5 +133,7 @@ function uwreal_to_tuple(x::uwreal,idset...)
     end
     return (x.mean,sqrt.(err)...)
 end
+
+export  uwreal_to_tuple
 
 end # module UWutils
