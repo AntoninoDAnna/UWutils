@@ -2,7 +2,7 @@
 
 julia_version = "1.12.6"
 manifest_format = "2.0"
-project_hash = "95977d13ebfaa42563cebaf3ffb25a89182a94d0"
+project_hash = "a2c75fbc880b00c9d1ce98f193eb567d3e33a6ce"
 
 [[deps.ADerrors]]
 deps = ["BDIO", "FFTW", "ForwardDiff", "LinearAlgebra", "Printf", "QuadGK", "Random", "Roots", "Statistics"]
@@ -614,6 +614,7 @@ uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 version = "1.11.0"
 
 [[deps.UWutils]]
+deps = ["ADerrors", "BDIO", "Format"]
 path = "."
 uuid = "f079b1de-477c-4692-a918-40b6c847d0c3"
 version = "0.1.0"
