@@ -43,5 +43,6 @@ julia> (v1,e1),(v2,e2) = format_uwreal(y)
 julia> println("$v1($e1)\n$v2($e2)")
 1.030(44)
 0.455(5)
-	```
+```
+
 * `uwreal_to_tuple(x::Vector{uwrea}[, idset....])` return a tuple of `Float64` where the first element is the mean value of x, while the second is the error. If `idset` is given, the second errors collects the error contribution *NOT* in `idset`, from the third error onwards, it collects the error contribution in each `idset`. `idset` can be single ensemble ids (either their `String` id or their numeric id), or collection of ids.
