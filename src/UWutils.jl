@@ -18,6 +18,41 @@ Base.abs2(uw::uwreal) = uw^2
 
 Base.zero(::Type{uwreal}) = uwreal(0.0)
 
+function uwreal_to_string(a::uwreal)
+    magnitude(x::Real) = x==0.0 ? 1 : floor(log10(abs(0.5*x)))
+    get_exponent(x::Real) = floor(log10(abs(0.5*x)))
+    magnitude10(x::Real) = x==0.0 ? 2 : ceil(log10(abs(x)));
+    err = a.err
+    val = a.mean
+    merr = -magnitude(err)
+    mval = -magnitude(val)
+    m = max(merr,mval)
+    err = round.(err,digits=Int(m))
+    val = round.(val,digits=Int(m))
+    M = magnitude10(err)
+    if err>1.0
+        err = format(err,width=Int(M+m),precision = Int(m), zeropadding = true)
+        M = magnitude10(abs.(val));
+        val = format(val,width=Int(M+m),precision = Int(m))
+        return string(val,"(",err,")")
+    elseif m<8
+        err *= 10^m
+        err = format(err,width=Int(M+m),precision=0, zeropadding=true)
+        M = magnitude10(abs.(val));
+        val = format(val,width=Int(M+m+1),precision = Int(m))
+        return string(val,"(",err,")")
+    else
+        _exp = get_exponent(val)
+        d = max(_exp - get_exponent(err), 0)
+        val = val * 10^-_exp
+        err = err * 10^-_exp
+        err = format(err,width=Int(M+m),precision=Int(d), zeropadding=true)
+        M = magnitude10(abs.(val));
+        val = format(val,width=Int(M+1),precision = Int(d))
+        return string(val,"(",err,")e",_exp)
+    end
+end
+
 @doc raw"""
      format_uwreal(x::uwreal)
      format_uwreal(x::AbstractArray{uwreal})
