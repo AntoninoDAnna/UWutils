@@ -169,6 +169,33 @@ function uwreal_to_tuple(x::uwreal,idset...)
     return (x.mean,sqrt.(err)...)
 end
 
+function Base.show(io::IO,::MIME"text/plain",a::uwreal)
+    if (length(a.prop) == 0)
+        print(io, a.mean)
+        return
+    end
+
+    if (length(a.cfd) > 0)
+        print(io, uwreal_to_string(a))
+    else
+        print(io, a.mean, " (Error not available... maybe run uwerr)")
+    end
+end
+
+function Base.print(io::IO,a::uwreal)
+    if (length(a.prop) == 0)
+        print(io, a.mean)
+        return
+    end
+
+    if (length(a.cfd) > 0)
+        print(io,a.mean, "+-", a.err)
+    else
+        print(io, a.mean, " (Error not available... maybe run uwerr)")
+    end
+end
+
+
 export  uwreal_to_tuple
 
 end # module UWutils
