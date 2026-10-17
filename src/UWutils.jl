@@ -1,6 +1,7 @@
 module UWutils
 using ADerrors, Format
 
+include("addobs_utils.jl")
 Base.length(::uwreal) = 1
 
 function Base.iterate(uw::uwreal,state=1)
@@ -194,7 +195,6 @@ function Base.print(io::IO,a::uwreal)
         print(io, a.mean, " (Error not available... maybe run uwerr)")
     end
 end
-
 
 export  uwreal_to_tuple
 
