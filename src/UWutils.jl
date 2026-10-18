@@ -16,8 +16,8 @@ end
 
 Base.abs(uw::uwreal) = uw.mean>0 ? uw : -uw
 Base.abs2(uw::uwreal) = uw^2
-
 Base.zero(::Type{uwreal}) = uwreal(0.0)
+ADerrors.uwreal(x::Bool) = x ? one(uwreal) : zero(uwreal)
 
 function uwreal_to_string(a::uwreal)
     magnitude(x::Real) = x==0.0 ? 1 : floor(log10(abs(0.5*x)))
@@ -25,6 +25,7 @@ function uwreal_to_string(a::uwreal)
     magnitude10(x::Real) = x==0.0 ? 2 : ceil(log10(abs(x)));
     err = a.err
     val = a.mean
+    a.err !=0 || return string(val,"(0)")
     merr = -magnitude(err)
     mval = -magnitude(val)
     m = max(merr,mval)
